@@ -4,7 +4,22 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const users = []; // This array will act as our in-memory database for this example
 
+// Define a Joi schema for registration validation
+const registerSchema = Joi.object({
+    username: Joi.string().alphanum().min(3).max(30).required(),
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required() // Password must be at least 8 characters long
+});
+
 const registerHandler = async (request, h) => {
+    // Validate the request payload
+    const { error } = registerSchema.validate(request.payload);
+
+    if (error) {
+        return h.response({ error: true, message: error.details[0].message }).code(400);
+    }
+
     const { username, name, email, password } = request.payload;
 
     // Check if username or email already exists
@@ -61,6 +76,21 @@ const editAccountSchema = Joi.object({
 }); 
 
 const editAccountHandler = async (request, h) => {
+    const { authorization } = request.headers;
+
+    if (!authorization) {
+        return h.response({ error: true, message: 'Authorization header missing' }).code(401);
+    }
+
+    const token = authorization.split(' ')[1];
+
+    let decoded;
+    try {
+        decoded = jwt.verify(token, 'your_jwt_secret');
+    } catch (err) {
+        return h.response({ error: true, message: 'Invalid token' }).code(401);
+    }
+
     const { error } = editAccountSchema.validate(request.payload);
 
     if (error) {
@@ -73,6 +103,11 @@ const editAccountHandler = async (request, h) => {
     const userIndex = users.findIndex(user => user.username === username);
     if (userIndex === -1) {
         return h.response({ error: true, message: 'User not found' }).code(404);
+    }
+
+    // Ensure the authenticated user is editing their own account
+    if (users[userIndex].id !== decoded.userId) {
+        return h.response({ error: true, message: 'Unauthorized' }).code(403);
     }
 
     // Check if email is already in use by another user
@@ -94,4 +129,6 @@ const editAccountHandler = async (request, h) => {
 
     return h.response({ error: false, message: 'User Updated' }).code(200);
 };
+
 module.exports = { registerHandler, loginHandler, editAccountHandler };
+
