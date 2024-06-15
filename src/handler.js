@@ -1,13 +1,12 @@
-// handler.js
-const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {firestore, storage} = require('../services/storeData');
+const Joi = require('joi');
 const Inert = require('@hapi/inert'); // Import plugin Inert
 
 //const users = []; // This array will act as our in-memory database for this example
 
-// Define a Joi schema for registration validation
+// Skema validasi
 const registerSchema = Joi.object({
         username: Joi.string().alphanum().min(3).max(30).required(),
         name: Joi.string().required(),
@@ -222,4 +221,3 @@ const editAccountSchema = Joi.object({
     
 
 module.exports = { registerHandler, loginHandler, editAccountHandler };
-

@@ -1,4 +1,3 @@
-// routes.js
 const { registerHandler, loginHandler, editAccountHandler } = require('./handler');
 
 const routes = [

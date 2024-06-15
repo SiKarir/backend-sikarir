@@ -12,11 +12,16 @@
   "dependencies": {
     "@google-cloud/firestore": "^7.8.0",
     "@google-cloud/storage": "^7.11.2",
+    "@hapi/accept": "^6.0.3",
     "@hapi/hapi": "^21.3.9",
     "@hapi/inert": "^7.1.0",
+    "@hapi/vision": "^7.0.3",
+    "@hapi/inert": "^7.1.0",
     "bcrypt": "^5.1.1",
+    "file-type": "^19.0.0",
     "joi": "^17.13.1",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.3"
