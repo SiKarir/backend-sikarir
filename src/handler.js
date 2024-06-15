@@ -4,8 +4,6 @@ const {firestore, storage} = require('../services/storeData');
 const Joi = require('joi');
 const Inert = require('@hapi/inert'); // Import plugin Inert
 
-//const users = []; // This array will act as our in-memory database for this example
-
 // Skema validasi
 const registerSchema = Joi.object({
         username: Joi.string().alphanum().min(3).max(30).required(),
@@ -218,6 +216,40 @@ const editAccountSchema = Joi.object({
         }
       };
       
+      const getAllMajorsHandler = async (request, h) => {
+        const { page = 1, size = 10 } = request.query;
+        const start = (page - 1) * size;
     
+        try {
+            const snapshot = await firestore.collection('majors').orderBy('name').offset(start).limit(size).get();
+            const listMajor = snapshot.docs.map(doc => doc.data());
+            return h.response({
+                error: false,
+                message: 'Majors fetched successfully',
+                listMajor
+            }).code(200);
+        } catch (error) {
+            console.error('Error fetching majors from Firestore:', error);
+            return h.response({ error: true, message: 'Failed to fetch majors' }).code(500);
+        }
+    };
 
-module.exports = { registerHandler, loginHandler, editAccountHandler };
+    const getAllCareersHandler = async (request, h) => {
+      const { page = 1, size = 10 } = request.query;
+      const start = (page - 1) * size;
+  
+      try {
+          const snapshot = await firestore.collection('careers').orderBy('name').offset(start).limit(size).get();
+          const listCareer = snapshot.docs.map(doc => doc.data());
+          return h.response({
+              error: false,
+              message: 'Careers fetched successfully',
+              listCareer
+          }).code(200);
+      } catch (error) {
+          console.error('Error fetching careers from Firestore:', error);
+          return h.response({ error: true, message: 'Failed to fetch careers' }).code(500);
+      }
+  };
+
+module.exports = { registerHandler, loginHandler, editAccountHandler, getAllMajorsHandler, getAllCareersHandler };

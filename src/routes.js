@@ -1,4 +1,4 @@
-const { registerHandler, loginHandler, editAccountHandler } = require('./handler');
+const { registerHandler, loginHandler, editAccountHandler, getAllMajorsHandler, getAllCareersHandler } = require('./handler');
 
 const routes = [
     {
@@ -23,6 +23,16 @@ const routes = [
             }
         },
         handler: editAccountHandler
+    },
+    {
+        method: 'GET',
+        path: '/catalog/majors',
+        handler: getAllMajorsHandler
+    },
+    {
+        method: 'GET',
+        path: '/catalog/careers',
+        handler: getAllCareersHandler
     }
 ];
 
