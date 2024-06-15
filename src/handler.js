@@ -199,22 +199,28 @@ const editAccountHandler = async (request, h) => {
 
 // Handler untuk mendapatkan semua jurusan
 const getAllMajorsHandler = async (request, h) => {
-    const { page = 1, size = 10 } = request.query;
-    const start = (page - 1) * size;
+  try {
+      // Get all document IDs
+      const snapshot = await firestore.collection('majors').listDocuments();
 
-    try {
-        const snapshot = await firestore.collection('majors').orderBy('name').offset(start).limit(size).get();
-        const listMajor = snapshot.docs.map(doc => doc.data());
+      // Retrieve all documents
+      const listMajor = [];
+      for (const docRef of snapshot) {
+          const doc = await docRef.get();
+          if (doc.exists) {
+              listMajor.push(doc.data());
+          }
+      }
 
-        return h.response({
-            error: false,
-            message: 'Majors fetched successfully',
-            listMajor
-        }).code(200);
-    } catch (error) {
-        console.error('Error fetching majors from Firestore:', error);
-        return h.response({ error: true, message: 'Failed to fetch majors' }).code(500);
-    }
+      return h.response({
+          error: false,
+          message: 'Majors fetched successfully',
+          listMajor
+      }).code(200);
+  } catch (error) {
+      console.error('Error fetching majors from Firestore:', error);
+      return h.response({ error: true, message: 'Failed to fetch majors' }).code(500);
+  }
 };
 
 // Handler untuk mendapatkan semua karir
