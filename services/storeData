@@ -1,0 +1,18 @@
+const { Firestore } = require('@google-cloud/firestore');
+const { Storage } = require('@google-cloud/storage');
+const path = require('path');
+
+// Inisialisasi Firestore dengan kredensial proyek GCP Anda
+const firestore = new Firestore({
+    // Ganti 'YOUR_PROJECT_ID' dengan ID proyek GCP Anda yang sebenarnya
+    projectId: 'sikarir',
+    keyFilename: path.join(__dirname, '../keyfile/keyfile-firestore.json') // Opsional jika Anda menggunakan kunci layanan JSON
+});
+
+// Inisialisasi Cloud Storage
+const storage = new Storage({
+    projectId: 'sikarir',
+    keyFilename: path.join(__dirname, '../keyfile/keyfile-cloudstorage.json'), // Ganti dengan path ke keyfile GCS Anda
+  });
+  
+module.exports = {firestore, storage};

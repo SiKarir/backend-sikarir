@@ -15,6 +15,14 @@ const routes = [
     {
         method: 'PUT',
         path: '/edit-account',
+        options: {
+            payload: {
+                output: 'stream',
+                parse: true,
+                allow: 'multipart/form-data',
+                multipart: true // This is important
+            }
+        },
         handler: editAccountHandler
     }
 ];
