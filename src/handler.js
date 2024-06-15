@@ -225,22 +225,28 @@ const getAllMajorsHandler = async (request, h) => {
 
 // Handler untuk mendapatkan semua karir
 const getAllCareersHandler = async (request, h) => {
-    const { page = 1, size = 10 } = request.query;
-    const start = (page - 1) * size;
+  try {
+      // Get all document IDs
+      const snapshot = await firestore.collection('careers').listDocuments();
 
-    try {
-        const snapshot = await firestore.collection('careers').orderBy('name').offset(start).limit(size).get();
-        const listCareer = snapshot.docs.map(doc => doc.data());
+      // Retrieve all documents
+      const listCareer = [];
+      for (const docRef of snapshot) {
+          const doc = await docRef.get();
+          if (doc.exists) {
+              listCareer.push(doc.data());
+          }
+      }
 
-        return h.response({
-            error: false,
-            message: 'Careers fetched successfully',
-            listCareer
-        }).code(200);
-    } catch (error) {
-        console.error('Error fetching careers from Firestore:', error);
-        return h.response({ error: true, message: 'Failed to fetch careers' }).code(500);
-    }
+      return h.response({
+          error: false,
+          message: 'Careers fetched successfully',
+          listCareer
+      }).code(200);
+  } catch (error) {
+      console.error('Error fetching careers from Firestore:', error);
+      return h.response({ error: true, message: 'Failed to fetch careers' }).code(500);
+  }
 };
 
 module.exports = { registerHandler, loginHandler, editAccountHandler, getAllMajorsHandler, getAllCareersHandler };
