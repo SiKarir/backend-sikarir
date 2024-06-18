@@ -1,3 +1,5 @@
+//server.js
+
 const Hapi = require('@hapi/hapi');
 const Inert = require('@hapi/inert'); // Plugin untuk menyajikan file statis
 const routes = require('./routes');
@@ -5,9 +7,15 @@ const Vision = require('@hapi/vision');
 const HapiSwagger = require('hapi-swagger');
 
 const init = async () => {
+
     const server = Hapi.server({
-        port: 5000,
-        host: 'localhost'
+        port: process.env.PORT,
+        host: '0.0.0.0',
+        routes: {
+            cors: {
+              origin: ['*'],
+                },
+        },
     });
 
   // Daftarkan plugin Inert dan Vision

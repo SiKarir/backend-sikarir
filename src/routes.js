@@ -1,4 +1,4 @@
-const { registerHandler, loginHandler, editAccountHandler, getAllMajorsHandler, getAllCareersHandler } = require('./handler');
+const { registerHandler, loginHandler, editAccountHandler, getAllMajorsHandler, getAllCareersHandler, searchCareersHandler, searchMajorsHandler, processQuizResultsHandler, getRandomMajorsHandler, getQuizHistoryByUserIdHandler } = require('./handler');
 
 const routes = [
     {
@@ -12,6 +12,16 @@ const routes = [
         handler: loginHandler
     },
     {
+        method: 'POST',
+        path: '/quiz',
+        handler: processQuizResultsHandler
+    },
+    {
+        method: 'GET',
+        path: '/quiz/history',
+        handler: getQuizHistoryByUserIdHandler
+    },
+    {
         method: 'PUT',
         path: '/edit-account',
         options: {
@@ -19,7 +29,7 @@ const routes = [
                 output: 'stream',
                 parse: true,
                 allow: 'multipart/form-data',
-                multipart: true // This is important
+                multipart: true
             }
         },
         handler: editAccountHandler
@@ -33,6 +43,21 @@ const routes = [
         method: 'GET',
         path: '/catalog/careers',
         handler: getAllCareersHandler
+    },
+    {
+        method: 'GET',
+        path: '/search/majors',
+        handler: searchMajorsHandler
+    },
+    {
+        method: 'GET',
+        path: '/search/careers',
+        handler: searchCareersHandler
+    },
+    {
+        method: 'GET',
+        path: '/catalog/majors/random',
+        handler: getRandomMajorsHandler
     }
 ];
 
