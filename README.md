@@ -5,12 +5,12 @@
 **SiKarir Backend** is the core engine powering the SiKarir mobile app, designed to assist final-year high school students in navigating their future careers and educational paths. This backend service manages user data, processes career quizzes, and provides personalized career recommendations using a machine learning model. It also serves detailed information about various careers and college majors, ensuring a seamless and informative experience for the users
 
 
-## Technologies Used 📤
+## Prerequisites 🚀
 
-1. **Node.js**: Make sure you have an Android phone.
-2. **Google Cloud Platform**: [Download SiKarir here](your-download-link) and install it on your device.
-3. **Postman**: Ensure you have an active internet connection to fully experience all features of the app.
-4. **Docker**: Ensure you have an active internet connection to fully experience all features of the app.
+1. **Node.js**: Make sure you have Node.js installed on your machine. It is required to run the backend server.
+2. **Google Cloud Platform**:  Utilize Google Cloud Platform for hosting and managing your backend services.
+3. **Postman**: Install Postman to test and interact with the API endpoints.
+4. **Docker**: Ensure Docker is installed to run containerized applications.
 
 ## Features 📱
 
